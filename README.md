@@ -197,3 +197,73 @@ plt.show()
 
 <ins> End-to-End Text Processing Workflow: </ins>
 - Practiced building an end-to-end NLP workflow that integrates data ingestion, text preprocessing, linguistic normalization, and visualization.
+
+### Stemming and Wordcloud Visualization of Lyrics
+
+<b> Code Overview: </b>
+- This code applies stemming techniques to an artist’s cleaned song lyrics and visualizes the results using a wordcloud. The process begins by importing Python libraries for data handling (pandas), visualization (matplotlib), and wordcloud generation (WordCloud).
+- The program reads a cleaned CSV file containing Erykah Badu’s lyrics and extracts the lyrics column for analysis. All lyric entries are combined into a single text corpus, which serves as the input for natural language processing.
+- Using the NLTK library, the lyrics text is tokenized into individual words. The Porter Stemmer is then applied to reduce words to their root forms by removing suffixes (e.g., running → run, happiness → happi). Although both Porter and Snowball stemmers are imported, the Porter Stemmer is used to generate the stemmed tokens in this implementation.
+- The stemmed tokens are converted back into a single string and used to generate a wordcloud visualization. This visual output highlights the most frequently occurring stems rather than complete dictionary words.
+- Finally, the wordcloud is displayed using Matplotlib with formatting adjustments for readability. This approach demonstrates how stemming alters word representations and affects the interpretation of dominant terms in lyrical content.
+
+```
+# Stemming Erykah Badu
+import pandas
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+
+inputdata = {}
+# I changed the CSV file to match the one for Erykah Badu made in example 2
+inputdata = pandas.read_csv('cleaninputdata_EB.csv', header=[0], index_col=0).to_dict()
+
+lyricsdictionary = inputdata.get("Lyrics")
+
+lyricslist = list(lyricsdictionary.values())
+
+lyricsinstring = ""
+for eachletter in lyricslist:
+    lyricsinstring += ''+ str(eachletter)
+
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer, SnowballStemmer
+porter_stemmer = PorterStemmer()
+snowball_stemmer = SnowballStemmer(language='english')
+
+tokenized_lyrics = word_tokenize(lyricsinstring)
+
+nltk.download('wordnet')
+porter_stems = [porter_stemmer.stem(word) for word in tokenized_lyrics]
+
+convert_tokens_back_to_string = " ".join(porter_stems)
+
+wordcloud = WordCloud(width = 500, height = 500,
+            background_color ='white',
+            min_font_size = 10).generate(convert_tokens_back_to_string)
+
+plt.figure(figsize = (15, 10), facecolor = None)
+plt.imshow(wordcloud)
+plt.axis("off")
+plt.show()
+```
+
+<b> Overall Skills Developed </b>
+
+<ins> Linguistic Normalization via Stemming: </ins>
+- Developed the ability to apply stemming techniques to reduce words to their root forms, enabling analysis of word frequency patterns independent of grammatical variations.
+
+<ins> Natural Language Processing (NLP) Tooling: </ins>
+- Strengthened familiarity with NLTK stemmers, including Porter and Snowball stemmers, and understood their role in text preprocessing workflows.
+
+<ins> Text Transformation & Token Handling: </ins>
+- Gained experience tokenizing large text corpora and transforming token-level outputs back into analyzable text formats.
+
+<ins> Exploratory Text Visualization: </ins>
+- Practiced using wordcloud visualizations to explore how stemming impacts dominant word patterns and thematic emphasis in song lyrics.
+
+<ins> Comparative NLP Analysis: </ins>
+- Learned to compare stemmed text outputs with original and lemmatized versions, supporting deeper analysis of preprocessing choices and their analytical consequences.
+
+<ins> End-to-End NLP Workflow Development: </ins>
+- Enhanced skills in building a complete text analytics pipeline that integrates data ingestion, stemming, visualization, and interpretive analysis.

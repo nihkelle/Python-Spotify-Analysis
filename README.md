@@ -127,3 +127,73 @@ plt.show()
 
 <ins> Analytical Storytelling & Insight Communication: </ins>
 - Enhanced the ability to communicate insights from unstructured text data through intuitive visual representations that support pattern recognition and high-level interpretation.
+
+### Lemmatization and Wordcloud Visualization of Lyrics
+
+<b> Code Overview: </b>
+- This code applies lemmatization to an artist’s cleaned song lyrics and visualizes the results using a wordcloud. The process begins by importing Python libraries for data handling (pandas), visualization (matplotlib), and wordcloud generation (WordCloud).
+- The program reads a cleaned CSV file containing Erykah Badu’s lyrics and converts the dataset into a dictionary format. The lyrics are extracted, combined into a single text string, and prepared for natural language processing.
+- Using the NLTK library, the lyrics text is tokenized into individual words, allowing each term to be processed independently. The WordNet lemmatizer is then applied to reduce words to their base or dictionary form (e.g., running → run, songs → song).
+- After lemmatization, the processed tokens are converted back into a single string. This transformed text is used as the input for generating a wordcloud, which visually highlights the most common lemmatized words in the lyrics.
+- Finally, the wordcloud is displayed using Matplotlib with formatting adjustments to improve clarity and readability. Overall, this code demonstrates how lemmatization affects word frequency representation and supports more accurate comparisons of lyrical themes.
+
+```python
+# Lemmatization Erykah Badu
+import pandas
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+
+inputdata = {}
+# I input the cleaned data for Erykah Badu that was made in example 2
+inputdata = pandas.read_csv('cleaninputdata_EB.csv', header=[0], index_col=0).to_dict()
+
+lyricsdictionary = inputdata.get("Lyrics")
+
+lyricslist = list(lyricsdictionary.values())
+
+lyricsinstring = ""
+for eachletter in lyricslist:
+    lyricsinstring += ''+ str(eachletter)
+
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+tokenized_lyrics = word_tokenize(lyricsinstring)
+
+nltk.download('wordnet')
+lemmatizer = WordNetLemmatizer()
+
+lemmatized_lyrics_tokens = [lemmatizer.lemmatize(word) for word in tokenized_lyrics]
+
+convert_tokens_back_to_string = " ".join(lemmatized_lyrics_tokens)
+
+wordcloud = WordCloud(width = 500, height = 500,
+            background_color ='white',
+min_font_size = 10).generate(convert_tokens_back_to_string)
+
+plt.figure(figsize = (15, 10), facecolor = None)
+plt.imshow(wordcloud)
+plt.axis("off")
+plt.show()
+```
+
+<b> Overall Skills Developed </b>
+
+<ins> Text Normalization Through Lemmatization: </ins>
+- Developed the ability to apply lemmatization techniques to reduce words to their base forms, improving the accuracy of word frequency analysis in text data.
+
+<ins> Natural Language Processing (NLP) Techniques: </ins>
+- Strengthened foundational NLP skills by implementing tokenization and lemmatization using the NLTK library and understanding their role in text preprocessing pipelines.
+  
+<ins> Comparative Text Analysis Preparation: </ins>
+- Learned how linguistic normalization impacts visual outputs such as wordclouds, enabling meaningful comparison between original, stemmed, and lemmatized text representations.
+
+<ins> Data Visualization for NLP Insights: </ins>
+- Gained experience generating and interpreting wordclouds that reflect normalized word usage patterns across an artist’s lyrical content.
+
+<ins> Analytical Reasoning & Interpretation: </ins>
+- Enhanced the ability to interpret how preprocessing choices influence analytical outcomes and visual patterns, supporting thoughtful evaluation of NLP results.
+
+<ins> End-to-End Text Processing Workflow: </ins>
+- Practiced building an end-to-end NLP workflow that integrates data ingestion, text preprocessing, linguistic normalization, and visualization.

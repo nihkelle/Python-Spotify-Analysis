@@ -1,4 +1,4 @@
-# Python - Spotify Analysis
+# 🐍 Python - Spotify Analysis
 
 ### Description 
 - In this project, I applied Python-based data collection and natural language processing (NLP) techniques to analyze song lyrics and album artwork from multiple music artists. The project included API-based data scraping, text cleaning, sentiment and emotion analysis, profanity detection, and image analytics. Through visualizations and comparative analysis, I developed skills in transforming unstructured media data into actionable insights for real-world analytical applications.

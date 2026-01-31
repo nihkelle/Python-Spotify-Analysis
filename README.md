@@ -267,3 +267,86 @@ plt.show()
 
 <ins> End-to-End NLP Workflow Development: </ins>
 - Enhanced skills in building a complete text analytics pipeline that integrates data ingestion, stemming, visualization, and interpretive analysis.
+
+### Sentiment Analysis of Lyrics Using TextBlob and VADER
+
+<b> Code Overview: </b>
+- This code performs sentiment analysis on Erykah Badu’s cleaned song lyrics using two different sentiment tools: TextBlob and VADER. It begins by importing libraries for data processing (pandas), sentiment scoring (TextBlob and SentimentIntensityAnalyzer from VADER), and CSV output management.
+- The program reads the cleaned lyrics dataset from a CSV file and extracts the lyrics column into a list so that each song’s lyrics can be analyzed individually. Two empty result lists are created to store sentiment outputs—one for TextBlob scores and one for VADER scores.
+- For each song’s lyrics, the code uses TextBlob to compute:
+    - Polarity (how positive or negative the text is)
+    - Subjectivity (how opinion-based vs. factual the text appears)
+      These values are stored in a dictionary and appended to a results list.
+- The code then applies VADER sentiment analysis to each lyric entry. VADER returns four scores:
+    - neg (negative sentiment proportion)
+    - neu (neutral sentiment proportion)
+    - pos (positive sentiment proportion)
+    - compound (overall sentiment score from -1 to +1)
+- These scores are stored for each song and later converted into a DataFrame for easy merging.
+- After generating sentiment results, the code merges the TextBlob and VADER sentiment scores back into the original lyrics dataset as new columns. The final dataset is then exported to a new CSV file, creating a clean output that can be used for summary statistics, trend plots, and comparisons across artists.
+
+```python
+# TextBlob and VADER for Erykah Badu
+import pandas
+from textblob import TextBlob
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import csv
+
+inputdata={}
+# Change CSV file name
+inputdata = pandas.read_csv('cleaninputdata_EB.csv', header=[0]).to_dict()
+
+lyricsdictionary = inputdata.get('Lyrics')
+lyricslist =  list(lyricsdictionary.values())
+
+textblob_results_list=[]
+vader_results_list=[]
+
+for i in range(len(lyricslist)):
+    textblob_analyze_polarity = TextBlob(lyricslist[i]).polarity
+    textblob_analyze_subjectivity = TextBlob(lyricslist[i]).subjectivity
+    
+    textblob_result = {"TextBlob Polarity Score":textblob_analyze_polarity,"TextBlob Subjectivity Score": textblob_analyze_subjectivity}
+    textblob_results_list.append(textblob_result)
+
+    vader_sentiment_analysis = SentimentIntensityAnalyzer().polarity_scores(lyricslist[i])
+    vader_results_list.append(vader_sentiment_analysis)
+
+textblobresults = pandas.DataFrame(textblob_results_list)
+
+vaderresults = pandas.DataFrame(vader_results_list)
+
+# changed CSV file name
+file = pandas.read_csv('cleaninputdata_EB.csv')
+file['TextBlob Polarity Score'] = textblobresults['TextBlob Polarity Score']
+file['TextBlob Subjectivity Score'] = textblobresults['TextBlob Subjectivity Score']
+file['Vader Negative Polarity Score'] = vaderresults['neg']
+file['Vader Neutral Polarity Score']= vaderresults['neu']
+file['Vader Positive Polarity Score'] = vaderresults['pos']
+file['Vader Compound Polarity Score'] = vaderresults['compound']
+
+# Changed CSV file name
+file.to_csv('example6results_EB.csv', index=True, index_label="Index")
+
+print("done")
+```
+
+<b> Overall Skills Developed </b>
+
+<ins> Sentiment Analysis with Multiple Models: </ins>
+- Developed the ability to apply and compare two sentiment tools (TextBlob and VADER), strengthening understanding of how different sentiment methods generate different emotional measurements.
+
+<ins> Feature Engineering & Dataset Enrichment: </ins>
+- Gained experience creating new analytical variables by generating sentiment scores and adding them as columns to an existing dataset for further analysis.
+
+<ins> NLP Metrics Interpretation: </ins>
+- Strengthened the ability to interpret sentiment outputs such as polarity, subjectivity, and compound sentiment scores, supporting meaningful comparison across songs and artists.
+
+<ins> Iterative Text Processing at Scale: </ins>
+- Practiced analyzing large collections of text by looping through lyric entries efficiently and storing results in structured formats for downstream use.
+
+<ins> Data Structuring & Results Integration: </ins>
+- Improved skills in organizing model outputs into Pandas DataFrames and merging multiple result sets into one unified dataset.
+
+<ins> Reproducible Output & CSV Exporting: </ins>
+- Learned how to generate reproducible outputs by exporting an analysis-ready CSV file that contains both original lyrics data and computed sentiment metrics.
